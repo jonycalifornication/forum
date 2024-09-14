@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/sign_up.css">
+    <title>Forum - Sign Up</title>
+</head>
+<body>
+    <header>
+        <a href="/" class="header-link">
+            <h1 class="forum-sign">Forum</h1>
+        </a>
+    </header>
+
+    <main>
+        <div class="signin-container">
+            <h2>Sign Up</h2>
+            {{if .ErrorMessage}}
+                <p class="error-message">{{.ErrorMessage}}</p>
+            {{end}}
+            <form action="/sign_up" method="post">
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required minlength="3" maxlength="20" placeholder="Enter your username" pattern="[a-zA-Z0-9_]+" title="Username can only contain alphanumeric characters and underscores.">
+                </div>
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address. Example: user@example.com">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required minlength="8" placeholder="Enter your password" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).+" title="Password must be at least 8 characters long and contain a mix of letters, numbers, and special characters.">
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            <button class="btn"><a href="/login">Authorize with Google</a></button>
+            <button class="btn"><a href="/login_github">Authorize with Github</a></button>
+            <div class="signin-link">
+                <p>Already have an account? <a href="/sign_in">Sign In</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Forum. All rights reserved.</p>
+    </footer>
+</body>
+</html>

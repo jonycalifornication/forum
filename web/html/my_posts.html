@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css?v=1.0">
+    <title>Forum - My Posts</title>
+    <meta name="description" content="A forum to view and manage your own posts.">
+</head>
+<body>
+
+    <header>
+        <a href="/" class="header-link">
+            <h1 class="forum-sign">Forum</h1>
+        </a>
+    </header>
+
+    <div class="content-wrapper">
+        <aside class="sidebar">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="/category?name=Football">Football</a></li>
+                <li><a href="/category?name=Basketball">Basketball</a></li>
+                <li><a href="/category?name=Hockey">Hockey</a></li>
+                <li><a href="/category?name=Other">Other</a></li>
+            </ul>
+        </aside>
+
+        <main class="container">
+            <h2>Your Posts</h2>
+            <div class="posts">
+                {{range .Posts}}
+                <article class="post">
+                    <a href="/posts?id={{.ID}}">
+                        <h2>{{.Title}}</h2>
+                        <p class="single-line-truncate">{{.Text}}</p>
+                    </a>
+                    <div class="categories">
+                        <strong>Categories:</strong>
+                        {{range .Categories}}
+                            <span class="category">{{.}}</span>
+                        {{end}}
+                    </div>
+                    <small>Posted by {{.Username}}</small>
+                </article>
+                {{else}}
+                <p>No posts available.</p>
+                {{end}}
+            </div>
+        </main>
+
+        <aside class="auth-sidebar">
+            {{if .Authenticated}}
+            <div class="user-info">
+                <div class="user-icon"></div>
+                <span>{{.Username}}</span>
+            </div>
+            <a href="/sign_out" class="sign-out-button">Sign Out</a>
+            <div class="console-panel">
+                <a href="/create_post">Create Post</a>
+                <a href="/liked_posts">Liked Posts</a>
+                <a href="/my_posts">My Posts</a>
+            </div>
+            {{else}}
+            <div class="auth-form">
+                <h3>Sign In</h3>
+                {{if .ErrorMessage}}
+                <p class="error">{{.ErrorMessage}}</p>
+                {{end}}
+                <form action="/sign_in" method="post">
+                    <div class="input-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                </form>
+                <div class="signup-link">
+                    <p>Don't have an account? <a href="/sign_up">Sign Up</a></p>
+                </div>
+            </div>
+            {{end}}
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Forum. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

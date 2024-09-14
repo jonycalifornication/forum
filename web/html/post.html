@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/post.css?v=1.0">
+    <title>Forum - Post</title>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="header-link">
+            <h1 class="forum-sign">Forum</h1>
+        </a>
+    </header>
+
+    <div class="content-wrapper">
+        <aside class="sidebar">
+            <h3>Categories</h3>
+            <ul>
+                <li><a href="/category?name=Football">Football</a></li>
+                <li><a href="/category?name=Basketball">Basketball</a></li>
+                <li><a href="/category?name=Hockey">Hockey</a></li>
+                <li><a href="/category?name=Other">Other</a></li>
+            </ul>
+        </aside>
+
+        <main class="container">
+            <div class="post">
+                <h2>{{.Post.Title}}</h2>
+                <p>{{.Post.Text}}</p>
+                <div class="image-container">
+                    <img src="/{{.Post.ImagePath}}" alt="Image Description">
+                </div>
+                
+                <div class="categories">
+                    <strong>Categories:</strong>
+                    {{range .Post.Categories}}
+                        <span class="category">{{.}}</span>
+                    {{end}}
+                </div>
+                <div class="post-actions">
+                    {{if .Authenticated}}
+                    <form action="/react" method="post" style="display:inline;">
+                        <input type="hidden" name="postId" value="{{.Post.ID}}">
+                        <input type="hidden" name="action" value="like">
+                        <button type="submit" class="like-button">Like</button>
+                        <span class="like-count">{{.LikeCount}} Likes</span>
+                    </form>
+                    <form action="/react" method="post" style="display:inline;">
+                        <input type="hidden" name="postId" value="{{.Post.ID}}">
+                        <input type="hidden" name="action" value="dislike">
+                        <button type="submit" class="dislike-button">Dislike</button>
+                        <span class="dislike-count">{{.DislikeCount}} Dislikes</span>
+                    </form>
+                    {{if .Delete}}
+                    <form action="/delete_post" method="post" style="display:inline;">
+                        <input type="hidden" name="postId" value="{{.Post.ID}}">
+                        <button type="submit" class="delete-button">Delete post</button>
+                    </form>
+                    {{end}}
+                    {{end}}
+                </div>
+                <small>Posted by {{.Post.Username}}</small>
+            </div>
+            <div class="comments-section">
+                <h3>Comments</h3>
+                {{range .Comments}}
+                    <div class="comment">
+                        <p><strong>{{ .Username}}</strong></p>
+                        <p>{{.Text}}</p>
+                        <small>{{.CreatedAt}}</small>
+                        <div class="comment-actions">
+                            {{if $.Authenticated}}
+                            <form action="/react_comment" method="post" style="display:inline;">
+                                <input type="hidden" name="commentId" value="{{.ID}}">
+                                <input type="hidden" name="postId" value="{{$.Post.ID}}">
+                                <input type="hidden" name="action" value="like">
+                                <button type="submit" class="like-button">Like</button>
+                                <span class="like-count">{{.LikeCount}} Likes</span>
+                            </form>
+                            <form action="/react_comment" method="post" style="display:inline;">
+                                <input type="hidden" name="commentId" value="{{.ID}}">
+                                <input type="hidden" name="postId" value="{{$.Post.ID}}">
+                                <input type="hidden" name="action" value="dislike">
+                                <button type="submit" class="dislike-button">Dislike</button>
+                                <span class="dislike-count">{{.DislikeCount}} Dislikes</span>
+                            </form>
+                            {{if .CanDelete}}
+                            <form action="/delete_comment" method="post" style="display:inline;">
+                                <input type="hidden" name="commentId" value="{{.ID}}">
+                                <input type="hidden" name="postId" value="{{$.Post.ID}}">
+                                <button type="submit" class="delete-button">Delete comment</button>
+                            </form>
+                            {{end}}
+                            {{end}}
+                        </div>
+                    </div>
+                {{end}}
+            </div>
+            {{if .Authenticated}}
+            <div class="comment-form">
+                <h3>Write a comment</h3>
+                <form action="/comment" method="post">
+                    <input type="hidden" name="postId" value="{{.Post.ID}}">
+                    <textarea name="text" rows="3" cols="50" required></textarea>
+                    <button type="submit" class="comment-button">Post Comment</button>
+                </form>
+            </div>
+            {{end}}
+        </main>
+
+        <aside class="auth-sidebar">
+            {{if .Authenticated}}
+            <div class="user-info">
+                <i class="user-icon"></i> <span>{{.Username}}</span>
+                <a href="/sign_out" class="button sign-out-button">Sign Out</a>
+            </div>
+            <nav class="console-panel">
+                <a href="/create_post" class="button button--console">Create Post</a>
+                <a href="/liked_posts" class="button button--console">Liked Posts</a>
+                <a href="/my_posts" class="button button--console">My Posts</a>
+            </nav>
+            {{else}}
+            <div class="auth-form">
+                <h3>Sign In</h3>
+                <form action="/sign_in" method="post">
+                    <div class="input-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                </form>
+                <div class="signup-link">
+                    <p>Don't have an account? <a href="/sign_up">Sign Up</a></p>
+                </div>
+            </div>
+            {{end}}
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Forum. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

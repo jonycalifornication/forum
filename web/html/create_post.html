@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/create_post.css?v=1.0">
+    <title>Forum - Create Post</title>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="header-link">
+            <h1 class="forum-sign">Forum</h1>
+        </a>
+    </header>
+
+    <main class="main-container">
+        <div class="create-post-container">
+            <h2>Create a New Post</h2>
+            {{if .ErrorMessage}}
+            <p class="error-message">{{.ErrorMessage}}</p>
+            {{end}}
+            <form method="POST" action="/create_post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Enter the post title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="text">Text</label>
+                    <textarea id="text" name="text" placeholder="Write your post here" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="file" name="image" accept="image/*">
+                </div>
+            
+                <div class="form-group categories">
+                    <label>Select Categories:</label>
+                    <div class="category-options">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="categories[]" value="Football"> <i class="fas fa-futbol"></i> Football
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="categories[]" value="Basketball"> <i class="fas fa-basketball-ball"></i> Basketball
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="categories[]" value="Hockey"> <i class="fas fa-hockey-puck"></i> Hockey
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="categories[]" value="Other"> <i class="fas fa-ellipsis-h"></i> Other
+                        </label>
+                    </div>
+                </div>
+            
+                <button type="submit" class="submit-btn">Publish Post</button>
+            </form>
+        </div>
+
+        <aside class="auth-sidebar">
+            {{if .Authenticated}}
+            <div class="user-info">
+                <i class="user-icon"></i> <span>{{.Username}}</span>
+                <a href="/sign_out" class="button sign-out-button">Sign Out</a>
+            </div>
+            <nav class="console-panel">
+                <a href="/create_post" class="button button--console">Create Post</a>
+                <a href="/liked_posts" class="button button--console">Liked Posts</a>
+                <a href="/my_posts" class="button button--console">My Posts</a>
+            </nav>
+            {{else}}
+            <div class="auth-form">
+                <h3>Sign In</h3>
+                {{if .ErrorMessage}}
+                <p class="error">{{.ErrorMessage}}</p>
+                {{end}}
+                <form action="/sign_in" method="post">
+                    <div class="input-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                </form>
+                <div class="signup-link">
+                    <p>Don't have an account? <a href="/sign_up">Sign Up</a></p>
+                </div>
+            </div>
+            {{end}}
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Forum. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

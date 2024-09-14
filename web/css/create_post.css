@@ -1,0 +1,339 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: #f9f9f9;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+
+p {
+    margin: 0 0 5px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #264dfc;
+    text-decoration: underline;
+}
+
+/* Header Styles */
+header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.forum-sign {
+    margin: 0;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Layout Styles */
+.main-container {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    flex-grow: 1;
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.create-post-container {
+    flex-grow: 1;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.auth-sidebar {
+    flex: 0 0 16%;
+    padding: 20px;
+    background: #ecf0f1;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 30px;
+}
+
+/* Create Post Styles */
+.create-post-container h2 {
+    text-align: center;
+    color: #3498db;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.form-group textarea {
+    height: 200px;
+    resize: vertical;
+}
+
+.categories {
+    margin-bottom: 20px;
+}
+
+.categories label {
+    font-weight: 500;
+    color: #333;
+}
+
+.category-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-options label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal;
+    font-size: 1.1rem;
+}
+
+.category-options input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: rgba(52, 152, 219, 0.8);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: rgba(52, 152, 219, 1);
+}
+
+.error-message {
+    color: #e74c3c;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Auth Sidebar Styles */
+.auth-sidebar .auth-form {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.auth-sidebar .auth-form h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.error {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.btn {
+    width: 100%;
+    background: linear-gradient(145deg, #56ccf2, #2f80ed);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.auth-sidebar .user-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-sidebar .user-info .user-icon {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background: #2ecc71;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.auth-sidebar .user-info span {
+    display: block;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.auth-sidebar .sign-out-button {
+    background: #e74c3c;
+    color: white;
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.auth-sidebar .sign-out-button:hover {
+    background: #c0392b;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.console-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.console-panel .button--console {
+    display: block;
+    background: linear-gradient(145deg, #56ccf2, #2f80ed);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.console-panel .button--console:hover {
+    background: rgba(86, 204, 242, 1);
+}
+
+/* Footer Styles */
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .auth-sidebar {
+        flex: 1;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .create-post-container {
+        padding: 15px;
+    }
+
+    .forum-sign {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+
+    .submit-btn, .btn {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}

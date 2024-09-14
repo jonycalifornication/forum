@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/error.css">
+    <title>Error {{.Code}}</title>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="header-link">
+            <h1 class="forum-sign">Forum</h1>
+        </a>
+    </header>
+
+    <main>
+        <div class="error-container">
+            <h2>Error {{.Code}}</h2>
+            <p>{{.Text}}</p>
+            <a href="/" class="button">Go to Home</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Forum. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

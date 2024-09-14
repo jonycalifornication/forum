@@ -1,0 +1,129 @@
+/* General Styles for Error Page */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    background: #e0e0e0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header, footer {
+    background: rgba(52, 152, 219, 0.9);
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1000;
+}
+
+header h1, footer p {
+    margin: 0;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+footer p {
+    margin-top: 10px;
+}
+
+/* Error Container Styles */
+.error-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    flex-grow: 1;
+}
+
+.error-container h2 {
+    color: #e74c3c;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.error-container p {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.error-container a.button {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.error-container a.button:hover {
+    background: #2980b9;
+}
+
+/* Ensure the footer is always at the bottom */
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Tablet and Mobile Styles */
+@media (max-width: 768px) {
+    .error-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .error-container h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .error-container h2 {
+        font-size: 1.2rem;
+    }
+
+    .error-container p {
+        font-size: 1rem;
+    }
+
+    .error-container a.button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
