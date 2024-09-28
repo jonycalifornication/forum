@@ -7,7 +7,7 @@ import (
 	"forum/handlers"
 	"forum/internal"
 	"forum/models"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -36,13 +36,13 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	code := r.URL.Query().Get("code")
 	token, err := getToken(code)
 	if err != nil {
-		fmt.Fprintf(w, "Failed to get token: %s", err.Error())
+		log.Println("Failed to get token:", err)
 		return
 	}
 
 	userInfo, err := getUserInfo(token)
 	if err != nil {
-		fmt.Fprintf(w, "Failed to get user info: %s", err.Error())
+		log.Println("Failed to get user info:", err)
 		return
 	}
 	var user User
@@ -129,7 +129,7 @@ func getToken(code string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -161,7 +161,7 @@ func getUserInfo(token string) ([]byte, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}

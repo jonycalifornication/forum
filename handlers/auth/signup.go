@@ -16,9 +16,9 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
-	case "GET":
+	case http.MethodGet:
 		handlers.RenderTemplate(w, "sign_up.html", nil)
-	case "POST":
+	case http.MethodPost:
 		if err := r.ParseForm(); err != nil {
 			log.Println(err)
 			handlers.ErrorHandler(w, http.StatusBadRequest)
