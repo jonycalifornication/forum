@@ -4,8 +4,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"forum/database"
-	"forum/internal"
-	"log"
+	"forum/handlers"
 	"net/http"
 )
 
@@ -17,32 +16,23 @@ func main() {
 
 	database.InitDB()
 
-	_, err := internal.LoadConfig("config.json")
-	if err != nil {
-		log.Println(err)
-	}
-
-	serverTLSCert, err := tls.LoadX509KeyPair(CertFilePath, KeyFilePath)
-	if err != nil {
-		log.Println(err)
-	}
+	rateLimiter := handlers.NewRateLimiter()
 
 	h := routes()
 
 	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{serverTLSCert},
-		MinVersion:   tls.VersionTLS12,
+		MinVersion: tls.VersionTLS12,
 	}
 
 	server := &http.Server{
 		Addr:      ":8080",
-		Handler:   h,
+		Handler:   rateLimiter.LimitMiddleware(h),
 		TLSConfig: tlsConfig,
 	}
 
-	fmt.Println("Server is running at http://localhost:8080")
-	err2 := server.ListenAndServeTLS("", "")
-	if err2 != nil {
-		fmt.Println("Error starting HTTPS server:", err2)
+	fmt.Println("Server is running at https://localhost:8080")
+	err := server.ListenAndServeTLS(CertFilePath, KeyFilePath)
+	if err != nil {
+		fmt.Println("Error starting HTTPS server:", err)
 	}
 }

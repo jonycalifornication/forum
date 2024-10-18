@@ -1,6 +1,7 @@
 package post
 
 import (
+	"fmt"
 	"forum/database"
 	"forum/handlers"
 	"forum/models"
@@ -34,6 +35,16 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userInfo, err := database.GetUserInfoByUsername(username)
+	role := ""
+	if err != nil {
+		log.Println(err)
+	} else if userInfo != nil {
+		role = userInfo.Role
+	}
+
+	fmt.Println("--------------", role)
+
 	var errorMessage string
 	if r.URL.Query().Get("error") != "" {
 		errorMessage = "An error occurred."
@@ -44,11 +55,13 @@ func MainPage(w http.ResponseWriter, r *http.Request) {
 		Username      string
 		Posts         []models.Post
 		ErrorMessage  string
+		Role          string
 	}{
 		Authenticated: authenticated,
 		Username:      username,
 		Posts:         posts,
 		ErrorMessage:  errorMessage,
+		Role:          role,
 	}
 
 	switch r.Method {

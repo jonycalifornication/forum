@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/index.css?v=1.0">
+  <title>My Profile</title>
+  <meta name="description" content="User profile page on the forum.">
+</head>
+<body>
+
+<header>
+  <a href="/" class="header-link">
+    <h1 class="forum-sign">Forum</h1>
+  </a>
+</header>
+
+<div class="content-wrapper">
+  <main class="container">
+    <section class="profile-section">
+      <h2>User Profile</h2>
+      <div class="profile-info-wrapper">
+        <div class="profile-avatar">
+          <i class="user-icon"></i>
+        </div>
+        <div class="profile-info">
+          <p><strong>Username:</strong> {{ .UserInfo.Name }}</p>
+          <p><strong>Email:</strong> {{ .UserInfo.Email }}</p>
+          <p><strong>Role:</strong> {{ .UserInfo.Role }}</p>
+        </div>
+
+      </div>
+    </section>
+
+    {{ if eq .UserInfo.Role "moderator" }}
+    <section class="admin-replies">
+      <h2>Replies from Admin</h2>
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Admin name</th>
+          <th>Post ID</th>
+          <th>Reply Text</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{range .RepliesFromAdmin}}
+        <tr>
+          <td>{{ .ID }}</td>
+          <td>{{ .Admin }}</td>
+          <td>
+            <a href="/posts/?id={{ .PostID }}" class="button button--console">View Post</a>
+          </td>
+          <td>{{ .ReplyText }}</td>
+          <td>{{ .CreatedAt.Format "2006-01-02 15:04:05" }}</td>
+          <td>
+            <form action="/delete_reply_from_admin" method="POST">
+              <input type="hidden" name="ID" value="{{.ID}}">
+              <button type="submit" class="button">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {{else}}
+        <tr>
+          <td colspan="6">No replies from admin found.</td>
+        </tr>
+        {{end}}
+        </tbody>
+      </table>
+    </section>
+    {{end}}
+
+    <section class="user-posts">
+      <h3>Your Recent Posts</h3>
+      <div class="posts">
+        {{range .Posts}}
+        <article class="post">
+          <a href="/posts?id={{.ID}}">
+            <h2>{{.Title}}</h2>
+          </a>
+          <div class="categories">
+            <strong>Categories:</strong>
+            {{range .Categories}}
+            <span class="category">{{.}}</span>
+            {{end}}
+          </div>
+          <small>Posted by {{.Username}}</small>
+        </article>
+        {{else}}
+        <p>You haven't posted anything yet.</p>
+        {{end}}
+      </div>
+    </section>
+  </main>
+
+  <aside class="auth-sidebar">
+    <div class="user-info">
+      <i class="user-icon"></i> <span>{{ .UserInfo.Name }}</span>
+      <p>{{ .UserInfo.Role }}</p>
+    </div>
+    <nav class="console-panel">
+      {{ if eq .UserInfo.Role "user" }}
+      <a href="/apply" class="button button--console">Apply for Moderator</a>
+      {{ end }}
+      <a href="/create_post" class="button button--console">Create Post</a>
+      <a href="/liked_posts" class="button button--console">Liked Posts</a>
+      <a href="/my_posts" class="button button--console">My Posts</a>
+    </nav>
+    <div class="user-info">
+      <a href="/sign_out" class="button sign-out-button">Sign Out</a>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p>&copy; 2024 Forum. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

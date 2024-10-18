@@ -33,7 +33,7 @@
                 <div class="image-container">
                     <img src="/{{.Post.ImagePath}}" alt="Image Description">
                 </div>
-                
+
                 <div class="categories">
                     <strong>Categories:</strong>
                     {{range .Post.Categories}}
@@ -60,6 +60,26 @@
                         <button type="submit" class="delete-button">Delete post</button>
                     </form>
                     {{end}}
+                    {{ if eq .Role "moderator" }}
+                    <button class="delete-button" onclick="openReportModal()">Report to Admin</button>
+                    {{ end }}
+
+                    <!-- Report Modal -->
+                    <div id="reportModal" class="modal" style="display: none;">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeReportModal()">&times;</span>
+                            <h2>Report Post</h2>
+                            <form action="/report_to_admin" method="post">
+                                <input type="hidden" name="postId" value="{{.Post.ID}}">
+                                <input type="hidden" name="username" value="{{.Post.Username}}">
+                                <input type="hidden" name="returnUrl" value="{{.CurrentURL}}">
+                                <label for="reportReason">Reason for Reporting:</label>
+                                <textarea id="reportReason" name="reportReason" rows="4" required minlength="10"></textarea>
+                                <button type="submit" class="btn">Submit Report</button>
+                            </form>
+                        </div>
+                    </div>
+
                     {{end}}
                 </div>
                 <small>Posted by {{.Post.Username}}</small>
@@ -105,7 +125,7 @@
                 <form action="/comment" method="post">
                     <input type="hidden" name="postId" value="{{.Post.ID}}">
                     <textarea name="text" rows="3" cols="50" required></textarea>
-                    <button type="submit" class="comment-button">Post Comment</button>
+                    <button type="submit" class="delete-button">Post Comment</button>
                 </form>
             </div>
             {{end}}
@@ -150,3 +170,23 @@
 
 </body>
 </html>
+
+<script>
+    function openReportModal() {
+        document.getElementById("reportModal").style.display = "block"; // Отобразить модал
+    }
+
+    function closeReportModal() {
+        document.getElementById("reportModal").style.display = "none"; // Скрыть модал
+    }
+
+    // Закрыть модал при клике вне его
+    window.onclick = function(event) {
+        const modal = document.getElementById("reportModal");
+        if (event.target == modal) {
+            modal.style.display = "none"; // Скрыть модал
+        }
+    }
+
+</script>
+

@@ -41,8 +41,16 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Проверка, является ли пользователь владельцем поста
-	if post.Username != sessionData["username"] {
+	username := sessionData["username"]
+
+	userInfo, err := database.GetUserInfoByUsername(username)
+	if err != nil {
+		log.Println("Error fetching user info:", err)
+		handlers.ErrorHandler(w, http.StatusInternalServerError)
+		return
+	}
+
+	if post.Username != username && (userInfo.Role != "admin" && userInfo.Role != "moderator") {
 		http.Error(w, "Forbidden", http.StatusForbidden)
 		return
 	}

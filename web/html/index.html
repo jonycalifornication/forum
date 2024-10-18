@@ -52,13 +52,20 @@
             {{if .Authenticated}}
             <div class="user-info">
                 <i class="user-icon"></i> <span>{{.Username}}</span>
-                <a href="/sign_out" class="button sign-out-button">Sign Out</a>
+                <p>{{.Role}}</p>
             </div>
             <nav class="console-panel">
+                {{ if eq .Role "admin" }}
+                <a href="/admin_page" class="button button--console">Admin page</a>
+                {{ end }}
+                <a href="/user_profile" class="button button--console">My profile</a>
                 <a href="/create_post" class="button button--console">Create Post</a>
                 <a href="/liked_posts" class="button button--console">Liked Posts</a>
                 <a href="/my_posts" class="button button--console">My Posts</a>
             </nav>
+            <div class="user-info">
+                <a href="/sign_out" class="button sign-out-button">Sign Out</a>
+            </div>
             {{else}}
             <div class="auth-form">
                 <h3>Sign In</h3>

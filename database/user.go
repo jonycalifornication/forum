@@ -1,7 +1,9 @@
 package database
 
 import (
+	"database/sql"
 	"errors"
+	"fmt"
 	"forum/internal"
 	"forum/models"
 	"log"
@@ -62,4 +64,49 @@ func GetUserID(username string) (int, error) {
 		return 0, err
 	}
 	return userID, nil
+}
+
+func GetUserInfoByUsername(username string) (*models.User, error) {
+	var user models.User
+	query := "SELECT username, email, role FROM users WHERE username = ?;"
+
+	err := DB.QueryRow(query, username).Scan(&user.Name, &user.Email, &user.Role)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("user not found")
+		}
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func GetAllUsers() ([]models.User, error) {
+	query := "SELECT username, email, role FROM users"
+
+	rows, err := DB.Query(query)
+	if err != nil {
+		log.Println("Error retrieving users:", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []models.User
+
+	for rows.Next() {
+		var user models.User
+		if err := rows.Scan(&user.Name, &user.Email, &user.Role); err != nil {
+			log.Println("Error scanning user data:", err)
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	// Проверка на ошибки после завершения итерации
+	if err := rows.Err(); err != nil {
+		log.Println("Error during row iteration:", err)
+		return nil, err
+	}
+
+	return users, nil
 }

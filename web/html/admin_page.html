@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/css/admin_page.css"> <!-- Подключение CSS -->
+</head>
+<body>
+
+<main>
+    <h1 class="center">Admin Page</h1>
+
+    <div class="button-container">
+        <a href="/" class="button">Go to forum</a>
+    </div>
+
+    <section class="admin-section">
+        <h2>Users</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range .UserInfo}}
+            <tr>
+                <td>{{ .Name }}</td>
+                <td>{{ .Email }}</td>
+                <td>{{ .Role }}</td>
+                <td>
+                    {{ if eq .Role "moderator" }}
+                    <a href="/admin_page_demote_to_user?username={{ .Name }}" class="button">Demote to user</a>
+                    {{ end }}
+                    {{ if eq .Role "user" }}
+                    <a href="/admin_page_allow?username={{ .Name }}" class="button">Upgrade to moderator</a>
+                    {{ end }}
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="4">No applications found.</td>
+            </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="admin-section">
+        <h2>Applications for Moderator</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Created at</th>
+                <th>Request</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range .Requests}}
+            <tr>
+                <td>{{ .Username }}</td>
+                <td>{{ .CreatedAt }}</td>
+                <td>Wants to be a moderator</td>
+                <td>
+                    <a href="/admin_page_allow?username={{ .Username }}" class="button">Allow</a>
+                    <a href="/admin_page_deny?username={{ .Username }}" class="button">Deny</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="4">No applications found.</td>
+            </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="admin-section">
+        <h2>All posts</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Title</th>
+                <th>Created at</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range .Posts}}
+            <tr>
+                <td>{{ .ID }}</td>
+                <td>{{ .Username }}</td>
+                <td>{{ .Title }}</td>
+                <td>{{ .CreatedAt }}</td>
+                <td>
+                    <a href="/admin_page_allow?username={{ .Username }}" class="button">Delete</a>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="4">No applications found.</td>
+            </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="admin-section">
+        <h2>Reports from moderators</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Reporter</th>
+                <th>Post ID</th>
+                <th>Username</th>
+                <th>Reason</th>
+                <th>Link to the post</th>
+                <th>Actions</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range .Reports}}
+            <tr>
+                <td>{{ .ModeratorUsername }}</td>
+                <td>{{ .PostID }}</td>
+                <td>{{ .Username }}</td>
+                <td>{{ .Reason }}</td>
+                <td>
+                    <a href="{{ .PostURL }}" class="button">To the post</a>
+                </td>
+                <td><button class="button" onclick="openReportModal()">Reply to moderator</button></td>
+                <td>
+                    <form action="/delete_report_from_admin" method="POST">
+                        <input type="hidden" name="ID" value="{{.ID}}">
+                        <button type="submit" class="button">Delete</button>
+                    </form>
+                </td>
+
+                <div id="reportModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeReportModal()">&times;</span>
+                        <h2>Reply to Moderator</h2>
+                        <form action="/send_reply" method="POST" id="replyForm">
+                            <input type="hidden" name="moderatorusername" value="{{ .ModeratorUsername }}">
+                            <input type="hidden" name="postid" value="{{.PostID}}">
+                            <textarea id="replyText" name="replyText" rows="4" placeholder="Type your reply here..." minlength="10"></textarea>
+                            <button type="submit" class="button">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="6">No reports found.</td>
+            </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<script>
+    function openReportModal() {
+        document.getElementById("reportModal").style.display = "block";
+    }
+
+    function closeReportModal() {
+        document.getElementById("reportModal").style.display = "none";
+    }
+
+    function sendReply() {
+        const replyText = document.getElementById("replyText").value;
+        if (replyText.trim() === "") {
+            alert("Please enter a reply.");
+            return;
+        }
+
+        // Здесь вы можете добавить код для отправки ответа на сервер
+        // Например, используя fetch API или AJAX.
+
+        // После успешной отправки:
+        alert("Reply sent: " + replyText);
+        closeReportModal(); // Закрыть модальное окно после отправки
+        document.getElementById("replyText").value = ""; // Очистить текстовое поле
+    }
+
+    // Закрыть модальное окно при клике вне его содержимого
+    window.onclick = function(event) {
+        const modal = document.getElementById("reportModal");
+        if (event.target === modal) {
+            closeReportModal();
+        }
+    };
+</script>
+
+</body>
+</html>
